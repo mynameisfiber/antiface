@@ -1,0 +1,3 @@
+[submodule "lightcnn"]
+	path = lightcnn
+	url = https://github.com/AlfredXiangWu/LightCNN.git
