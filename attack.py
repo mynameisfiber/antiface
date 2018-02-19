@@ -18,7 +18,7 @@ def mse_loss(input, target):
     return torch.sum((input - target)**2) / input.data.nelement()
 
 
-def attack(image, model, target_vector, eps=0.001, n_epoch=1):
+def attack(image, model, target_vector, eps=0.001, n_epoch=25):
     X = autograd.Variable(image, requires_grad=True)
     X_orig = X.clone()
     output_orig = None
@@ -36,12 +36,15 @@ def attack(image, model, target_vector, eps=0.001, n_epoch=1):
         output_adv = model(autograd.Variable(X_adv))
         cossim = nn.CosineSimilarity()
         print("Orig -> Adv:", float(cossim(output_orig, output_adv)))
+        print("Orig -> Target:",
+              float(cossim(output_orig,
+                           torch.unsqueeze(target_vector, 0))))
         print("Adv -> Target:",
               float(cossim(output_adv,
                            torch.unsqueeze(target_vector, 0))))
         X = autograd.Variable(X_adv, requires_grad=True)
 
-    return X_orig.data - X_adv
+    return X_adv - X_orig.data
 
 
 if __name__ == "__main__":

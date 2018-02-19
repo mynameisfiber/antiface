@@ -18,7 +18,7 @@ def add_noise(noise_profile, meta, save=False):
         )
         image = image.astype('float')
         for i in range(image.shape[-1]):
-            image[top:bottom, left:right, i] += noise_resize
+            image[top:bottom, left:right, i] -= noise_resize
         image = image.astype('uint8')
         if save:
             Image.fromarray(image).save(m['filename'] + '.adv.png')
